@@ -63,9 +63,9 @@ This table provides a general performance categorization of various GPUs in rela
 
 **Categories:**
 
-*   **Poor-Medium:** Generally 40 - 100 FPS at low settings, may struggle at higher settings or resolutions.
+*   **Poor-Medium:** Generally 40 - 100+ FPS at low settings, may struggle at higher settings or resolutions.
 *   **Medium:** Generally 120 - 200+ FPS at medium settings, good for 1080p gaming.
-*   **High:** Generally 144 - 300 FPS at high settings, capable of 1440p and some 4K gaming (depending on the specific card).
+*   **High:** Generally 144 - 300+ FPS at high settings, capable of 1440p and some 4K gaming (depending on the specific card).
 
 ---
 
