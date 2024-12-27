@@ -44,6 +44,125 @@ The script leverages `wmic` (Windows Management Instrumentation Command-line) an
 ## Example Output
 ![image](https://github.com/user-attachments/assets/07c1b46e-7ec4-4fa7-b49e-16f6fa6014a9)
 
+## GPU Lookup Table
+
+This table provides a general performance categorization of various GPUs in relation to Valorant. This is not an exhaustive list, but it covers a wide range of common graphics cards. The "Performance Category" is a general estimate of how well the GPU will run Valorant at common settings.
+
+**Important Notes:**
+
+*    **Valorant is CPU-Intensive:** **Valorant is a CPU-bound game, meaning your CPU performance will often be the primary factor determining your frame rate.** A powerful GPU is still helpful, but a strong CPU is more critical for achieving high and stable FPS in Valorant. Prioritize your CPU first, then RAM, and then your GPU.
+*   **Resolution:** These categories are based on a 1080p resolution. Higher resolutions will generally result in lower frame rates.
+*   **Settings:** The "Poor-Medium," "Medium," and "High" categories refer to general performance at corresponding in-game settings.
+*   **Laptop GPUs:** Laptop versions of these GPUs (e.g., RTX 3060 Laptop GPU) might perform slightly differently than their desktop counterparts due to power and thermal constraints.
+*   **Future Updates:** This table will be updated periodically, but new GPUs are constantly being released.
+*   **Other Factors:** Factors such as your monitor's refresh rate and whether you are streaming or recording can also affect performance.
+
+**Format:**
+
+`GPU Model`, `Performance Category`
+
+**Categories:**
+
+*   **Poor-Medium:** Generally 40 - 100 FPS at low settings, may struggle at higher settings or resolutions.
+*   **Medium:** Generally 120 - 200+ FPS at medium settings, good for 1080p gaming.
+*   **High:** Generally 144 - 300 FPS at high settings, capable of 1440p and some 4K gaming (depending on the specific card).
+
+---
+
+### Poor-Medium
+
+| GPU Model                | Performance Category |
+| :----------------------- | :------------------- |
+| NVIDIA GeForce GTX 1050   | Poor-Medium          |
+| NVIDIA GeForce GTX 950    | Poor-Medium          |
+| NVIDIA GeForce GTX 960    | Poor-Medium          |
+| NVIDIA GeForce GT 1030    | Poor-Medium          |
+| Radeon RX 550            | Poor-Medium          |
+| Radeon RX 560            | Poor-Medium          |
+| Radeon R7 360            | Poor-Medium          |
+| Radeon R7 370            | Poor-Medium          |
+| Intel UHD Graphics 620   | Poor-Medium          |
+| Intel UHD Graphics 630   | Poor-Medium          |
+| Intel UHD Graphics 750   | Poor-Medium          |
+| Intel Iris Xe Graphics   | Poor-Medium          |
+
+### Medium
+
+| GPU Model                    | Performance Category |
+| :--------------------------- | :------------------- |
+| NVIDIA GeForce GTX 1050 Ti    | Medium               |
+| NVIDIA GeForce GTX 1650      | Medium               |
+| NVIDIA GeForce GTX 1650 Super | Medium               |
+| NVIDIA GeForce GTX 1660      | Medium               |
+| NVIDIA GeForce GTX 1660 Super | Medium               |
+| NVIDIA GeForce GTX 1660 Ti    | Medium               |
+| NVIDIA GeForce GTX 1060      | Medium               |
+| NVIDIA GeForce GTX 1060 3GB  | Medium               |
+| NVIDIA GeForce GTX 1060 6GB  | Medium               |
+| NVIDIA GeForce GTX 970       | Medium               |
+| NVIDIA GeForce GTX 980       | Medium               |
+| NVIDIA Radeon RX 570         | Medium               |
+| NVIDIA Radeon RX 580         | Medium               |
+| NVIDIA Radeon RX 590         | Medium               |
+| NVIDIA Radeon RX 5500 XT      | Medium               |
+| NVIDIA Radeon RX 5600 XT      | Medium               |
+| Radeon RX 470                | Medium               |
+| Radeon RX 480                | Medium               |
+| Intel Arc A380              | Medium               |
+
+### High
+
+| GPU Model                    | Performance Category |
+| :--------------------------- | :------------------- |
+| NVIDIA GeForce RTX 2060      | High                 |
+| NVIDIA GeForce RTX 2060 Super | High                 |
+| NVIDIA GeForce RTX 2070      | High                 |
+| NVIDIA GeForce RTX 2070 Super | High                 |
+| NVIDIA GeForce RTX 2080      | High                 |
+| NVIDIA GeForce RTX 2080 Super | High                 |
+| NVIDIA GeForce RTX 2080 Ti    | High                 |
+| NVIDIA GeForce RTX 3050      | High                 |
+| NVIDIA GeForce RTX 3060      | High                 |
+| NVIDIA GeForce RTX 3060 Ti    | High                 |
+| NVIDIA GeForce RTX 3070      | High                 |
+| NVIDIA GeForce RTX 3070 Ti    | High                 |
+| NVIDIA GeForce RTX 3080      | High                 |
+| NVIDIA GeForce RTX 3080 Ti    | High                 |
+| NVIDIA GeForce RTX 3090      | High                 |
+| NVIDIA GeForce RTX 3090 Ti    | High                 |
+| NVIDIA GeForce RTX 4060      | High                 |
+| NVIDIA GeForce RTX 4060 Ti    | High                 |
+| NVIDIA GeForce RTX 4070      | High                 |
+| NVIDIA GeForce RTX 4070 Super | High                 |
+| NVIDIA GeForce RTX 4070 Ti    | High                 |
+| NVIDIA GeForce RTX 4070 Ti Super | High                 |
+| NVIDIA GeForce RTX 4080      | High                 |
+| NVIDIA GeForce RTX 4080 Super | High                 |
+| NVIDIA GeForce RTX 4090      | High                 |
+| Radeon RX 5700 XT            | High                 |
+| Radeon RX 5700               | High                 |
+| Radeon RX 6600 XT            | High                 |
+| Radeon RX 6600               | High                 |
+| Radeon RX 6650 XT            | High                 |
+| Radeon RX 6700 XT            | High                 |
+| Radeon RX 6750 XT            | High                 |
+| Radeon RX 6800               | High                 |
+| Radeon RX 6800 XT            | High                 |
+| Radeon RX 6900 XT            | High                 |
+| Radeon RX 6950 XT            | High                 |
+| Radeon RX 7600               | High                 |
+| Radeon RX 7700 XT            | High                 |
+| Radeon RX 7800 XT            | High                 |
+| Radeon RX 7900 XT            | High                 |
+| Radeon RX 7900 XTX            | High                 |
+| Intel Arc A580              | High                 |
+| Intel Arc A750              | High                 |
+| Intel Arc A770              | High                 |
+
+---
+
+This table is intended to be a helpful resource, but please do your own research to determine the best GPU for your specific needs and budget. You can find more detailed performance benchmarks and comparisons online.
+
 ## Requirements
 
 -   Windows 10 (64-bit, Build 19045 or later) or Windows 11 (64-bit).
