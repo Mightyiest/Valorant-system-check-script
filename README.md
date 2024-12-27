@@ -1,4 +1,4 @@
-# Valorant System Check Batch
+# Valorant System Check script
 
 [![Status](https://img.shields.io/badge/Status-Working-green)](https://shields.io/)
 
