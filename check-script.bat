@@ -1,6 +1,20 @@
 @echo off
+echo v1.0.1
 echo Checking System Eligibility for Valorant (TPM 2.0, Secure Boot, Windows Version, CPU Performance, RAM, GPU)...
 echo.
+
+:: Download lookup_gpu.txt from GitHub
+set "lookupUrl=https://raw.githubusercontent.com/Mightyiest/Valorant-system-check-script/main/lookup_gpu.txt"
+set "lookupFile=%TEMP%\lookup_gpu.txt"
+
+if exist "%lookupFile%" del "%lookupFile%"
+
+echo Downloading GPU lookup table...
+curl -s -o "%lookupFile%" "%lookupUrl%"
+if not exist "%lookupFile%" (
+    echo Failed to download GPU lookup table.
+    goto :end
+)
 
 echo Motherboard:
 wmic baseboard get product,Manufacturer,version,serialnumber
@@ -186,12 +200,30 @@ for /f "tokens=* delims= " %%a in ("%gpuName%") do set "gpuName=%%a"
 
 echo Detected GPU: %gpuName%
 
+:: Lookup GPU Performance Category
+set gpuCategory=Unknown
+for /f "tokens=1,2 delims=," %%a in (%lookupFile%) do (
+    if /i "%%a"=="%gpuName%" set gpuCategory=%%b
+)
+
+:: Display GPU Performance Category
+if defined gpuCategory (
+    if %gpuCategory%==Poor-Medium (
+        call :ColorEcho 93 "Poor-Medium Performance (%gpuName%)"
+    ) else if %gpuCategory%==Medium (
+        call :ColorEcho 93 "Medium Performance (%gpuName%)"
+    ) else if %gpuCategory%==High (
+        call :ColorEcho 92 "High Performance (%gpuName%)"
+    )
+) else (
+    call :ColorEcho 91 "GPU performance categorization not available."
+)
 goto :evaluate
 
 :: Evaluate System Performance and Display Message
 :evaluate
 echo.
-if defined ramCategory if defined cpuCategory (
+if defined ramCategory if defined cpuCategory if defined gpuCategory (
     if %ramCategory%==Low (
         call :ColorEcho 91 "Your PC is eligible to play but expect Low FPS (30-40)."
     ) else if %ramCategory%==Medium (
@@ -226,6 +258,7 @@ del "%TEMP%\temp_cpu.txt"
 del "%TEMP%\temp_ram.txt"
 del "%TEMP%\temp_winver.txt"
 del "%TEMP%\temp_gpu.txt"
+del "%lookupFile%"
 
 echo.
 (pause)
