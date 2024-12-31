@@ -1,5 +1,14 @@
 @echo off
-echo v1.0.1
+:: Check for administrative privileges
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo This script must be run as an administrator.
+    echo Please right-click the script and select "Run as administrator".
+    pause
+    exit /b
+)
+
+echo v1.0.2
 echo Checking System Eligibility for Valorant (TPM 2.0, Secure Boot, Windows Version, CPU Performance, RAM, GPU)...
 echo.
 
@@ -20,30 +29,35 @@ echo Motherboard:
 wmic baseboard get product,Manufacturer,version,serialnumber
 echo.
 
+:: Check TPM 2.0
 echo TPM 2.0:
 powershell -Command "(Get-Tpm).TpmPresent" > "%TEMP%\temp_tpm_present.txt"
 findstr /i "True" "%TEMP%\temp_tpm_present.txt" > nul
 
 if %errorlevel% equ 0 (
- powershell -Command "(Get-Tpm).TpmReady" > "%TEMP%\temp_tpm_ready.txt"
- findstr /i "True" "%TEMP%\temp_tpm_ready.txt" > nul
+    powershell -Command "(Get-Tpm).TpmReady" > "%TEMP%\temp_tpm_ready.txt"
+    findstr /i "True" "%TEMP%\temp_tpm_ready.txt" > nul
 
- if %errorlevel% equ 0 (
-     powershell -Command "(Get-Tpm).ManufacturerVersion -like '2.0*'" > "%TEMP%\temp_tpm_version.txt"
-     findstr /i "True" "%TEMP%\temp_tpm_version.txt" > nul
+    if %errorlevel% equ 0 (
+        powershell -Command "(Get-Tpm).ManufacturerVersion -like '2.0*'" > "%TEMP%\temp_tpm_version.txt"
+        findstr /i "True" "%TEMP%\temp_tpm_version.txt" > nul
 
-     if %errorlevel% equ 0 (
-         call :ColorEcho 92 Enabled
-     ) else (
-         call :ColorEcho 91 "Disabled or Not Found (not version 2.0)"
-     )
-     del "%TEMP%\temp_tpm_version.txt"
- ) else (
-     call :ColorEcho 91 "Disabled or Not Ready"
- )
- del "%TEMP%\temp_tpm_ready.txt"
+        if %errorlevel% equ 0 (
+            set tpmStatus=Enabled
+            call :ColorEcho 92 Enabled
+        ) else (
+            set tpmStatus=Disabled
+            call :ColorEcho 91 "Disabled or Not Found (not version 2.0)"
+        )
+        del "%TEMP%\temp_tpm_version.txt"
+    ) else (
+        set tpmStatus=Disabled
+        call :ColorEcho 91 "Disabled or Not Ready"
+    )
+    del "%TEMP%\temp_tpm_ready.txt"
 ) else (
- call :ColorEcho 91 "Not Found"
+    set tpmStatus=NotFound
+    call :ColorEcho 91 "Not Found"
 )
 del "%TEMP%\temp_tpm_present.txt"
 
@@ -56,9 +70,11 @@ powershell -Command "Confirm-SecureBootUEFI" > "%TEMP%\temp_sb.txt"
 findstr /i "True" "%TEMP%\temp_sb.txt" > nul
 
 if %errorlevel% equ 0 (
- call :ColorEcho 92 Enabled
+    set secureBootStatus=Enabled
+    call :ColorEcho 92 Enabled
 ) else (
- call :ColorEcho 91 Disabled
+    set secureBootStatus=Disabled
+    call :ColorEcho 91 Disabled
 )
 echo.
 
@@ -69,41 +85,41 @@ echo Checking Windows version:
 wmic os get Caption, BuildNumber, OSArchitecture /value > "%TEMP%\temp_winver.txt"
 
 for /f "tokens=2 delims==" %%I in ('type "%TEMP%\temp_winver.txt" ^| findstr /i "Caption"') do (
- set "winVersion=%%I"
+    set "winVersion=%%I"
 )
 
 for /f "tokens=2 delims==" %%I in ('type "%TEMP%\temp_winver.txt" ^| findstr /i "BuildNumber"') do (
- set "buildNumber=%%I"
+    set "buildNumber=%%I"
 )
 
 for /f "tokens=2 delims==" %%I in ('type "%TEMP%\temp_winver.txt" ^| findstr /i "OSArchitecture"') do (
- set "osArch=%%I"
+    set "osArch=%%I"
 )
 
 echo Detected OS: %winVersion% (Build %buildNumber%) %osArch%
 
 if "%osArch%"=="64-bit" (
- echo %winVersion% | findstr /i "10" > nul
- if %errorlevel% equ 0 (
-     if %buildNumber% GEQ 19045 (
-         call :ColorEcho 92 "OK! (Windows 10 64-bit, Build 19045 or later)"
-     ) else (
-         call :ColorEcho 91 "Not OK! (Windows 10 64-bit, Build is older than 19045)"
-     )
-     goto :ramcheck
- )
+    echo %winVersion% | findstr /i "10" > nul
+    if %errorlevel% equ 0 (
+        if %buildNumber% GEQ 19045 (
+            call :ColorEcho 92 "OK! (Windows 10 64-bit, Build 19045 or later)"
+        ) else (
+            call :ColorEcho 91 "Not OK! (Windows 10 64-bit, Build is older than 19045)"
+        )
+        goto :ramcheck
+    )
 
- echo %winVersion% | findstr /i "11" > nul
- if %errorlevel% equ 0 (
-     call :ColorEcho 92 "OK! (Windows 11 64-bit)"
-     goto :ramcheck
- )
+    echo %winVersion% | findstr /i "11" > nul
+    if %errorlevel% equ 0 (
+        call :ColorEcho 92 "OK! (Windows 11 64-bit)"
+        goto :ramcheck
+    )
 
- call :ColorEcho 91 "Not OK! (Unsupported Windows version)"
- goto :end
+    call :ColorEcho 91 "Not OK! (Unsupported Windows version)"
+    goto :end
 ) else (
- call :ColorEcho 91 "Not OK! (Requires 64-bit Windows)"
- goto :end
+    call :ColorEcho 91 "Not OK! (Requires 64-bit Windows)"
+    goto :end
 )
 
 :ramcheck
@@ -114,20 +130,20 @@ echo RAM Check:
 powershell -Command "$RAM = (Get-WmiObject -Class Win32_ComputerSystem).TotalPhysicalMemory; [math]::Round($RAM / 1GB)" > "%TEMP%\temp_ram.txt"
 
 for /f "tokens=*" %%a in ('type "%TEMP%\temp_ram.txt"') do (
- set "ramTotalGB=%%a"
+    set "ramTotalGB=%%a"
 )
 
 echo Detected RAM: %ramTotalGB%GB
 
 if %ramTotalGB% LSS 8 (
- set ramCategory=Low
- call :ColorEcho 91 "Too Low: %ramTotalGB% GB"
+    set ramCategory=Low
+    call :ColorEcho 91 "Too Low: %ramTotalGB% GB"
 ) else if %ramTotalGB% GEQ 8 if %ramTotalGB% LSS 16 (
- set ramCategory=Medium
- call :ColorEcho 93 "Medium: %ramTotalGB% GB"
+    set ramCategory=Medium
+    call :ColorEcho 93 "Medium: %ramTotalGB% GB"
 ) else (
- set ramCategory=High
- call :ColorEcho 92 "Good: %ramTotalGB% GB"
+    set ramCategory=High
+    call :ColorEcho 92 "Good: %ramTotalGB% GB"
 )
 
 goto :cpucheck
@@ -138,7 +154,7 @@ echo CPU Performance:
 wmic cpu get name /value > "%TEMP%\temp_cpu.txt"
 
 for /f "usebackq tokens=2 delims==" %%I in (`type "%TEMP%\temp_cpu.txt" ^| findstr /i "name"`) do (
- set "cpuName=%%I"
+    set "cpuName=%%I"
 )
 
 echo Detected CPU: %cpuName%
@@ -172,15 +188,15 @@ if %errorlevel% equ 0 set cpuCategory=High
 
 :: Display CPU Performance Category
 if defined cpuCategory (
- if %cpuCategory%==Poor-Medium (
-     call :ColorEcho 93 "Poor-Medium Performance (Ryzen 5/7 1000 series or Intel 7th Gen)"
- ) else if %cpuCategory%==Medium (
-     call :ColorEcho 93 "Medium Performance (Ryzen 3/5/7 2000 series or Intel 8th Gen)"
- ) else if %cpuCategory%==High (
-     call :ColorEcho 92 "High Performance (Ryzen 3/5/7/9 3000 series or later, or Intel 9th Gen or later)"
- )
+    if %cpuCategory%==Poor-Medium (
+        call :ColorEcho 93 "Poor-Medium Performance (Ryzen 5/7 1000 series or Intel 7th Gen)"
+    ) else if %cpuCategory%==Medium (
+        call :ColorEcho 93 "Medium Performance (Ryzen 3/5/7 2000 series or Intel 8th Gen)"
+    ) else if %cpuCategory%==High (
+        call :ColorEcho 92 "High Performance (Ryzen 3/5/7/9 3000 series or later, or Intel 9th Gen or later)"
+    )
 ) else (
- call :ColorEcho 91 "CPU performance categorization not available."
+    call :ColorEcho 91 "CPU performance categorization not available."
 )
 
 goto :gpucheck
@@ -251,6 +267,14 @@ if defined ramCategory if defined cpuCategory if defined gpuCategory (
     )
 ) else (
     call :ColorEcho 91 "Performance evaluation not available due to missing RAM, CPU, or GPU information."
+)
+
+:: Display warning for TPM 2.0 and Secure Boot if necessary
+if "%tpmStatus%" neq "Enabled" (
+    call :ColorEcho 91 "Warning: In order to play Valorant, you must enable TPM 2.0."
+)
+if "%secureBootStatus%" neq "Enabled" (
+    call :ColorEcho 91 "Warning: In order to play Valorant, you must enable Secure Boot."
 )
 
 :end
