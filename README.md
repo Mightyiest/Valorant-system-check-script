@@ -42,7 +42,7 @@ The script leverages `wmic` (Windows Management Instrumentation Command-line) an
 3.  **View Results:** The script will display the results in the command prompt window.
 
 ## Example Output
-![image](https://github.com/user-attachments/assets/07c1b46e-7ec4-4fa7-b49e-16f6fa6014a9)
+![image](https://github.com/user-attachments/assets/f6ee75df-6842-4107-b43f-a28ee203bda4)
 
 ## GPU Lookup Table
 
