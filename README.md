@@ -158,6 +158,10 @@ This table provides a general performance categorization of various GPUs in rela
 | Intel Arc A580              | High                 |
 | Intel Arc A750              | High                 |
 | Intel Arc A770              | High                 |
+| NVIDIA GeForce RTX 5000           | High                 |
+| NVIDIA GeForce RTX 6000         | High                 |
+| Radeon RX 8000           | High                 |
+| Radeon RX 9000           | High                 |
 
 ---
 
